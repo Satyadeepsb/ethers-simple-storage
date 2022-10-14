@@ -343,3 +343,4 @@ package-lock.json
 # End of https://www.toptal.com/developers/gitignore/api/node,solidity,soliditytruffle,yarn,visualstudiocode
 yarn.lock
 .vscode/settings.json
+.encryptedKey.json

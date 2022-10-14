@@ -5,9 +5,15 @@ require("dotenv").config();
 async function main() {
   // connect to Ganache network using ethers.js
   const provider = new ethers.providers.JsonRpcProvider(process.env.RPC_URL);
-  const wallet = new ethers.Wallet(process.env.PRIVATE_KEY, provider);
+  //  const wallet = new ethers.Wallet(process.env.PRIVATE_KEY, provider);
   const abi = fs.readFileSync("./SimpleStoreage_sol_SimpleStorage.abi", "utf8");
 
+  const encryptedJson = fs.readFileSync("./.encryptedKey.json", "utf8");
+  let wallet = new ethers.Wallet.fromEncryptedJsonSync(
+    encryptedJson,
+    process.env.PRIVATE_KEY_PASSWORD
+  );
+  wallet = await wallet.connect(provider);
   const binary = fs.readFileSync(
     "./SimpleStoreage_sol_SimpleStorage.bin",
     "utf8"
