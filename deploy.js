@@ -1,23 +1,23 @@
-const ethers = require("ethers");
-const fs = require("fs-extra");
-require("dotenv").config();
+const ethers = require("ethers")
+const fs = require("fs-extra")
+require("dotenv").config()
 
 async function main() {
   // connect to Ganache network using ethers.js
-  const provider = new ethers.providers.JsonRpcProvider(process.env.RPC_URL);
-  //  const wallet = new ethers.Wallet(process.env.PRIVATE_KEY, provider);
-  const abi = fs.readFileSync("./SimpleStoreage_sol_SimpleStorage.abi", "utf8");
+  const provider = new ethers.providers.JsonRpcProvider(process.env.RPC_URL)
+  const wallet = new ethers.Wallet(process.env.PRIVATE_KEY, provider)
+  const abi = fs.readFileSync("./SimpleStoreage_sol_SimpleStorage.abi", "utf8")
 
-  const encryptedJson = fs.readFileSync("./.encryptedKey.json", "utf8");
-  let wallet = new ethers.Wallet.fromEncryptedJsonSync(
-    encryptedJson,
-    process.env.PRIVATE_KEY_PASSWORD
-  );
-  wallet = await wallet.connect(provider);
+  // const encryptedJson = fs.readFileSync("./.encryptedKey.json", "utf8");
+  // let wallet = new ethers.Wallet.fromEncryptedJsonSync(
+  //   encryptedJson,
+  //   process.env.PRIVATE_KEY_PASSWORD
+  // );
+  // wallet = await wallet.connect(provider);
   const binary = fs.readFileSync(
     "./SimpleStoreage_sol_SimpleStorage.bin",
     "utf8"
-  );
+  )
   // const contractFactory = new ethers.ContractFactory(abi, binary, wallet);
   // console.log("Deploying....Please wait...");
   // const contract = await contractFactory.deploy(); // STOP here! Wait for the contract to be deployed
@@ -50,24 +50,24 @@ async function main() {
   // await sendTxResponse.wait(1); // wait for 1 block conformation
   // console.log(sendTxResponse);
 
-  const contractFactory = new ethers.ContractFactory(abi, binary, wallet);
-  console.log("Deploying....Please wait...");
-  const contract = await contractFactory.deploy(); // STOP here! Wait for the contract to be deployed
-  await contract.deployTransaction.wait(1);
+  const contractFactory = new ethers.ContractFactory(abi, binary, wallet)
+  console.log("Deploying....Please wait...")
+  const contract = await contractFactory.deploy() // STOP here! Wait for the contract to be deployed
+  await contract.deployTransaction.wait(1)
 
-  const currentFavoriteNumber = await contract.retrieve();
-  console.log(`Current Favorite Number = ${currentFavoriteNumber.toString()}`);
+  const currentFavoriteNumber = await contract.retrieve()
+  console.log(`Current Favorite Number = ${currentFavoriteNumber.toString()}`)
 
-  const transactionResponse = await contract.store("7");
-  const transactionReceipt = await transactionResponse.wait(1);
+  const transactionResponse = await contract.store("7")
+  const transactionReceipt = await transactionResponse.wait(1)
 
-  const updatedNumber = await contract.retrieve();
-  console.log(`updated Number = ${updatedNumber.toString()}`);
+  const updatedNumber = await contract.retrieve()
+  console.log(`updated Number = ${updatedNumber.toString()}`)
 }
 
 main()
   .then(() => process.exit(0))
   .catch((error) => {
-    console.error(error);
-    process.exit(1);
-  });
+    console.error(error)
+    process.exit(1)
+  })
