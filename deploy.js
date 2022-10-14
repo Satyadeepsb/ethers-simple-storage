@@ -6,12 +6,12 @@ async function main() {
   // WSL - http://127.0.0.1:8545
   // connect to Ganache network using ethers.js
   const provider = new ethers.providers.JsonRpcProvider(
-    "http://127.0.0.1:7545"
+    "http://127.0.0.1:8545"
   );
   // Windows - a833a535f9c18c210f2366f519d5ff2ab80bf8fdf72b634d828da084fb78953a
-  // WSL - 0xfb07234f1c635d54be7415286d3595cf5ab16054b2c52931a8c059a6f52c23d5
+  // WSL - 0x30162e16acb3a9339a749f9c0b9877a350935bf7edbaeac5146631fc069d7e29
   const wallet = new ethers.Wallet(
-    "a833a535f9c18c210f2366f519d5ff2ab80bf8fdf72b634d828da084fb78953a",
+    "0x30162e16acb3a9339a749f9c0b9877a350935bf7edbaeac5146631fc069d7e29",
     provider
   );
   const abi = fs.readFileSync("./SimpleStoreage_sol_SimpleStorage.abi", "utf8");
@@ -25,7 +25,13 @@ async function main() {
   const contract = await contractFactory.deploy(); // STOP here! Wait for the contract to be deployed
   // const contract = await contractFactory.deploy({gasPrice : 1000000000, gasLimit: 10000000000});
   // can pass args to deploye as gasPrice, gasLimit
-  console.log(contract);
+  // Transaction Receipts - wait for block conformation (1)
+  const transactionReceipt = await contract.deployTransaction.wait(1);
+  console.log("Here is the deployment transaction (transaction response)");
+  console.log(contract.deployTransaction);
+  console.log("Here is the transaction receipt");
+  // when you wait for block conformation then you get the transactionReceipt
+  console.log(transactionReceipt);
 }
 
 main()
