@@ -1,19 +1,11 @@
 const ethers = require("ethers");
 const fs = require("fs-extra");
+require("dotenv").config();
 
 async function main() {
-  // Windows - http://127.0.0.1:7545
-  // WSL - http://127.0.0.1:8545
   // connect to Ganache network using ethers.js
-  const provider = new ethers.providers.JsonRpcProvider(
-    "http://127.0.0.1:7545"
-  );
-  // Windows - 483fa880533344feacaa24396b9121ce2c554598c6eb17b02de444be8a965cfe
-  // WSL - 0x30162e16acb3a9339a749f9c0b9877a350935bf7edbaeac5146631fc069d7e29
-  const wallet = new ethers.Wallet(
-    "483fa880533344feacaa24396b9121ce2c554598c6eb17b02de444be8a965cfe",
-    provider
-  );
+  const provider = new ethers.providers.JsonRpcProvider(process.env.RPC_URL);
+  const wallet = new ethers.Wallet(process.env.PRIVATE_KEY, provider);
   const abi = fs.readFileSync("./SimpleStoreage_sol_SimpleStorage.abi", "utf8");
 
   const binary = fs.readFileSync(
