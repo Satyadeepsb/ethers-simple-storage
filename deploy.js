@@ -54,7 +54,7 @@ async function main() {
   console.log("Deploying....Please wait...")
   const contract = await contractFactory.deploy() // STOP here! Wait for the contract to be deployed
   await contract.deployTransaction.wait(1)
-
+  console.log(`Contract Address: ${contract.address}`)
   const currentFavoriteNumber = await contract.retrieve()
   console.log(`Current Favorite Number = ${currentFavoriteNumber.toString()}`)
 
