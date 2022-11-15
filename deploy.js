@@ -60,7 +60,7 @@ async function main() {
 
   const transactionResponse = await contract.store("7")
   const transactionReceipt = await transactionResponse.wait(1)
-
+  console.log(transactionReceipt);
   const updatedNumber = await contract.retrieve()
   console.log(`updated Number = ${updatedNumber.toString()}`)
 }
